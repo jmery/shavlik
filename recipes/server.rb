@@ -25,6 +25,20 @@ ms_dotnet_framework '4.6.2' do
   require_support true
 end
 
+install_file = 'ShavlikProtect_Alpha_9.3.3329.exe'
+
+remote_file "#{Chef::Config['file_cache_path']}/#{install_file}" do
+  source "https://s3.amazonaws.com/jmery/aig/#{install_file}"
+  checksum '482b3f9c7ce4481402f167a50c30a2ad46a9d7c8f47ef36328c9a68540d76307'
+  action :create
+end
+
+package 'Shavlik Protect' do
+  source "#{Chef::Config['file_cache_path']}/#{install_file}"
+  installer_type :custom
+  options '/quiet'
+end
+
 # SQL Server 2014 Express
 # node.default['sql_server']['accept_eula'] = true
 # node.default['sql_server']['version'] = '2014'
