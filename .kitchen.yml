@@ -39,13 +39,13 @@ suites:
 
   - name: shavlik
     run_list:
-      - recipe[shavlik::hosts]
+      - recipe[shavlik::server]
     excludes:
       - ubuntu-14.04
     driver:
       vm_hostname: shavlik
-      network:
-        - ['private_network', {ip: '33.33.0.20'}]
+#      network:
+#        - ['private_network', {ip: '33.33.0.20'}]
     verifier:
       inspec_tests:
         - https://github.com/dev-sec/windows-patch-benchmark
@@ -53,13 +53,13 @@ suites:
 
   - name: unpatched
     run_list:
-      - recipe[shavlik::hosts]
+      - recipe[shavlik::default]
     excludes:
       - ubuntu-14.04
     driver:
       vm_hostname: unpatched
-      network:
-        - ['private_network', {ip: '33.33.0.30'}]
+#      network:
+#        - ['private_network', {ip: '33.33.0.30'}]
     verifier:
       inspec_tests:
         - https://github.com/dev-sec/windows-patch-benchmark
