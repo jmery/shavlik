@@ -33,7 +33,9 @@ remote_file "#{Chef::Config['file_cache_path']}/#{install_file}" do
   action :create
 end
 
-package 'Shavlik Protect' do
+# TODO: Firewall rule for port 3121 & 3122 for agent communication
+
+windows_package 'Shavlik Protect' do
   source "#{Chef::Config['file_cache_path']}/#{install_file}"
   installer_type :custom
   options '/quiet'

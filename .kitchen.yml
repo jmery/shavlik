@@ -12,6 +12,13 @@ verifier:
 platforms:
   - name: windows-2012r2
     driver:
+      box: mwrock/Windows2012R2
+      gui: true
+    transport:
+      name: winrm
+      elevated: true
+  - name: windows-2012r2-older
+    driver:
       box: opentable/win-2012r2-standard-amd64-nocm
       gui: true
     transport:
@@ -20,47 +27,47 @@ platforms:
   - name: ubuntu-14.04
 
 suites:
-#  - name: chef-server
-#    run_list:
-#      - recipe[shavlik::hosts]
-#      - recipe[shavlik::install_chef_server]
-#    excludes:
-#      - windows-2012r2
-#    driver:
-#      vm_hostname: chef
-#      network:
-#        - ['private_network', {ip: '33.33.0.10'}]
-#      customize:
-#        memory: 2048
-#    attributes:
-#      chef_server:
-#        fqdn: chef
-#        install_dir: /tmp/
-
   - name: shavlik
-    run_list:
-      - recipe[shavlik::server]
     excludes:
+      - windows-2012r2-older
       - ubuntu-14.04
+    run_list:
+      - recipe[shavlik::hosts]
+      - recipe[shavlik::server]
+      - recipe[shavlik::scan]
     driver:
       vm_hostname: shavlik
-#      network:
-#        - ['private_network', {ip: '33.33.0.20'}]
+      network:
+        - ['private_network', {ip: '33.33.0.20'}]
     verifier:
       inspec_tests:
         - https://github.com/dev-sec/windows-patch-benchmark
     attributes:
 
   - name: unpatched
-    run_list:
-      - recipe[shavlik::default]
     excludes:
+      - windows-2012r2
       - ubuntu-14.04
+    run_list:
+      - recipe[shavlik::hosts]
+      - recipe[shavlik::client]
     driver:
       vm_hostname: unpatched
-#      network:
-#        - ['private_network', {ip: '33.33.0.30'}]
+      network:
+        - ['private_network', {ip: '33.33.0.30'}]
     verifier:
       inspec_tests:
         - https://github.com/dev-sec/windows-patch-benchmark
     attributes:
+
+  - name: chef
+    excludes:
+      - windows-2012r2
+      - windows-2012r2-older
+    run_list:
+      - recipe[shavlik::hosts]
+      - recipe[shavlik::install_chef_server]
+    driver:
+      vm_hostname: chef
+      network:
+        - ['private_network', {ip: '33.33.0.10'}]
