@@ -22,3 +22,8 @@ windows_package 'Shavlik Protect Agent' do
   installer_type :custom
   options "/wi:\"/qn /l*v install.log SERVERURI=https://#{server}:#{port} POLICY=#{policy} AUTHENTICATIONTYPE=#{auth} PASSPHRASE=#{passphrase}\""
 end
+
+# Gems we need to query Shavlik for status from chef
+chef_gem 'dbi'
+chef_gem 'dbd-odbc'
+chef_gem 'ruby-odbc'

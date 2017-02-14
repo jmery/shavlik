@@ -5,14 +5,6 @@
 # Copyright:: 2017, The Authors, All Rights Reserved.
 
 # Prereqs
-# Visual C++ 2015 x64 (probably just runtime)
-# SKIP - No reboot required; Shavlik installs this just fine
-# windows_package node['shavlik']['vc_runtime']['name'] do
-#   # checksum node['shavlik']['vc_runtime']['sha256sum']
-#   source node['shavlik']['vc_runtime']['url']
-#   installer_type :custom
-#   options '/q'
-# end
 
 # WMF 4.0
 include_recipe 'powershell::powershell4'
